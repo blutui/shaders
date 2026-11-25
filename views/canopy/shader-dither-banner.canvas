@@ -1,0 +1,70 @@
+{% canopy config %}
+{
+    "title": "Shader: Dithering Banner",
+    "name": "shader_dither_banner",
+    "settings": [
+        { "name": "heading", "type": "heading", "tab": "Content", "default": { "value": "Two colours. Zero images.", "element": "h2" }, "elements": [{ "value": "h2" }, { "value": "h3" }] },
+        { "name": "description", "type": "textarea", "tab": "Content", "default": "A retro dithered pattern drawn live on the GPU. Swap the ink colour, pattern and pixel size from the Shader tab." },
+        { "name": "cta", "type": "url", "label": "Button", "tab": "Content", "default": { "url": "https://shaders.paper.design", "text": "Explore Paper Shaders", "target": "_blank" } },
+        { "name": "show_panel", "type": "checkbox", "label": "Show text panel", "tab": "Content", "default": true, "help": "Adds a solid panel behind the text for legibility" },
+
+        { "name": "color_back", "type": "color", "label": "Background", "tab": "Shader", "group": "Colours", "default": "#000000" },
+        { "name": "color_front", "type": "color", "label": "Ink", "tab": "Shader", "group": "Colours", "default": "#00b2ff" },
+
+        { "name": "shape", "type": "select", "label": "Pattern", "tab": "Shader", "group": "Pattern", "default": "sphere", "options": [
+            { "value": "simplex", "label": "Noise" },
+            { "value": "warp", "label": "Warp" },
+            { "value": "dots", "label": "Dots" },
+            { "value": "wave", "label": "Wave" },
+            { "value": "ripple", "label": "Ripple" },
+            { "value": "swirl", "label": "Swirl" },
+            { "value": "sphere", "label": "Sphere" }
+        ] },
+        { "name": "type", "type": "radio", "label": "Dither type", "tab": "Shader", "group": "Pattern", "default": "4x4", "options": [
+            { "value": "random", "label": "Random" },
+            { "value": "2x2", "label": "2×2" },
+            { "value": "4x4", "label": "4×4" },
+            { "value": "8x8", "label": "8×8" }
+        ] },
+        { "name": "pixel_size", "type": "number", "tab": "Shader", "group": "Pattern", "min": 1, "max": 20, "default": 3, "help": "Size of each dither pixel" },
+        { "name": "scale", "type": "number", "tab": "Shader", "group": "Pattern", "min": 10, "max": 400, "default": 45, "help": "Zoom, 100 = actual size" },
+
+        { "name": "speed", "type": "number", "tab": "Shader", "group": "Motion", "min": 0, "max": 200, "default": 100, "help": "100 = normal speed, 0 = still" },
+        { "name": "paused", "type": "checkbox", "label": "Pause animation", "tab": "Shader", "group": "Motion", "default": false }
+    ]
+}
+{% endcanopy %}
+
+{% canopy template %}
+<section class="relative isolate overflow-hidden" style="background-color: {{ settings.color_back }}">
+  <div
+    class="absolute inset-0 -z-10"
+    aria-hidden="true"
+    data-shader="dithering"
+    data-color-back="{{ settings.color_back }}"
+    data-color-front="{{ settings.color_front }}"
+    data-shape="{{ settings.shape }}"
+    data-type="{{ settings.type }}"
+    data-pixel-size="{{ settings.pixel_size }}"
+    data-scale="{{ settings.scale }}"
+    data-speed="{{ settings.speed }}"
+    data-paused="{{ settings.paused ? 'true' : 'false' }}"
+  ></div>
+
+  <div class="mx-auto flex min-h-[60vh] max-w-6xl items-end px-6 py-16">
+    <div class="max-w-lg text-white {{ settings.show_panel ? 'rounded-2xl p-8 shadow-2xl' : '' }}" {% if settings.show_panel %}style="background-color: {{ settings.color_back }}"{% endif %}>
+      <{{ settings.heading.element }} class="text-3xl font-extrabold tracking-tight sm:text-5xl">{{ settings.heading.value }}</{{ settings.heading.element }}>
+      {% if settings.description %}
+        <p class="mt-4 text-lg text-white/80">{{ settings.description }}</p>
+      {% endif %}
+      {% if settings.cta.url %}
+        <a href="{{ settings.cta.url }}" target="{{ settings.cta.target }}" {% if settings.cta.target == '_blank' %}rel="noopener noreferrer"{% endif %} class="mt-8 inline-flex rounded-full px-6 py-3 font-semibold text-black transition hover:opacity-90" style="background-color: {{ settings.color_front }}">{{ settings.cta.text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endcanopy %}
+
+{% canopy scripts %}
+{{ asset('js/shaders.js') | script_tag }}
+{% endcanopy %}

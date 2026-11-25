@@ -1,0 +1,62 @@
+{% canopy config %}
+{
+    "title": "Shader: Grain Gradient Section",
+    "name": "shader_grain_section",
+    "settings": [
+        { "name": "anchor", "type": "text", "label": "Section ID", "tab": "Content", "default": "grain", "help": "Used for #links to this section" },
+        { "name": "heading", "type": "heading", "tab": "Content", "default": { "value": "Grain, shape and softness", "element": "h2" }, "elements": [{ "value": "h2" }, { "value": "h3" }] },
+        { "name": "body", "type": "richtext", "tab": "Content", "default": "<p>Pick a shape from a dropdown and the shader switches pattern. Selects are perfect for shader options that only accept a fixed list of values.</p>" },
+        { "name": "align", "type": "radio", "label": "Text alignment", "tab": "Content", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }] },
+
+        { "name": "shape", "type": "select", "tab": "Shader", "group": "Pattern", "default": "corners", "options": [
+            { "value": "wave", "label": "Wave" },
+            { "value": "dots", "label": "Dots" },
+            { "value": "truchet", "label": "Truchet" },
+            { "value": "corners", "label": "Corners" },
+            { "value": "ripple", "label": "Ripple" },
+            { "value": "blob", "label": "Blob" },
+            { "value": "sphere", "label": "Sphere" }
+        ] },
+        { "name": "color_back", "type": "color", "label": "Background", "tab": "Shader", "group": "Colours", "default": "#0a0a0f" },
+        { "name": "color_1", "type": "color", "label": "Colour 1", "tab": "Shader", "group": "Colours", "default": "#7300ff" },
+        { "name": "color_2", "type": "color", "label": "Colour 2", "tab": "Shader", "group": "Colours", "default": "#eba8ff" },
+        { "name": "color_3", "type": "color", "label": "Colour 3", "tab": "Shader", "group": "Colours", "default": "#00bfff" },
+
+        { "name": "softness", "type": "number", "tab": "Shader", "group": "Texture", "min": 0, "max": 100, "default": 50, "help": "0 = hard edges, 100 = smooth blend" },
+        { "name": "intensity", "type": "number", "tab": "Shader", "group": "Texture", "min": 0, "max": 100, "default": 50, "help": "Distortion between colour bands" },
+        { "name": "noise", "type": "number", "tab": "Shader", "group": "Texture", "min": 0, "max": 100, "default": 25, "help": "Grain amount" },
+        { "name": "scale", "type": "number", "tab": "Shader", "group": "Texture", "min": 10, "max": 400, "default": 100, "help": "Zoom, 100 = actual size" },
+
+        { "name": "speed", "type": "number", "tab": "Shader", "group": "Motion", "min": 0, "max": 200, "default": 100, "help": "100 = normal speed, 0 = still" },
+        { "name": "paused", "type": "checkbox", "label": "Pause animation", "tab": "Shader", "group": "Motion", "default": false }
+    ]
+}
+{% endcanopy %}
+
+{% canopy template %}
+<section {% if settings.anchor %}id="{{ settings.anchor }}"{% endif %} class="relative isolate overflow-hidden text-white" style="background-color: {{ settings.color_back }}">
+  <div
+    class="absolute inset-0 -z-10"
+    aria-hidden="true"
+    data-shader="grain-gradient"
+    data-shape="{{ settings.shape }}"
+    data-color-back="{{ settings.color_back }}"
+    data-colors="{{ [settings.color_1, settings.color_2, settings.color_3]|join(',') }}"
+    data-softness="{{ settings.softness }}"
+    data-intensity="{{ settings.intensity }}"
+    data-noise="{{ settings.noise }}"
+    data-scale="{{ settings.scale }}"
+    data-speed="{{ settings.speed }}"
+    data-paused="{{ settings.paused ? 'true' : 'false' }}"
+  ></div>
+
+  <div class="mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-center px-6 py-24 {{ settings.align == 'center' ? 'items-center text-center' : '' }}">
+    <{{ settings.heading.element }} class="max-w-2xl text-4xl font-extrabold tracking-tight sm:text-6xl">{{ settings.heading.value }}</{{ settings.heading.element }}>
+    <div class="mt-6 max-w-xl space-y-4 text-lg text-white/85">{{ settings.body|raw }}</div>
+  </div>
+</section>
+{% endcanopy %}
+
+{% canopy scripts %}
+{{ asset('js/shaders.js') | script_tag }}
+{% endcanopy %}

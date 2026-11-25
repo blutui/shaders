@@ -1,0 +1,22 @@
+{% extends 'templates/default' %}
+
+{% block styles %}
+  {{ canopy.head('main') }}
+{% endblock %}
+
+{% block body %}
+  <main>
+    {# A fixed sequence of the three shader blocks. Editors change every setting; the list sets the order. #}
+    {{ canopy.blocks('main', ['shader_mesh_hero', 'shader_grain_section', 'shader_dither_banner'], {
+      allow: ['shader_mesh_hero', 'shader_grain_section', 'shader_dither_banner']
+    }) }}
+  </main>
+
+  <footer class="border-t border-white/10 px-6 py-10 text-center text-sm text-zinc-400">
+    Built with Blutui Canopy blocks and <a class="underline hover:text-white" href="https://shaders.paper.design" target="_blank" rel="noopener noreferrer">Paper Shaders</a>.
+  </footer>
+{% endblock %}
+
+{% block scripts %}
+  {{ canopy.scripts('main') }}
+{% endblock %}

@@ -1,0 +1,64 @@
+{% canopy config %}
+{
+    "title": "Shader: Mesh Gradient Hero",
+    "name": "shader_mesh_hero",
+    "settings": [
+        { "name": "eyebrow", "type": "text", "tab": "Content", "default": "Paper Shaders × Canopy" },
+        { "name": "heading", "type": "heading", "tab": "Content", "default": { "value": "Shaders your editors can tune", "element": "h1" }, "elements": [{ "value": "h1" }, { "value": "h2" }] },
+        { "name": "description", "type": "textarea", "tab": "Content", "default": "Every colour and slider in this hero is a Canopy block setting, passed to a WebGL shader through data attributes." },
+        { "name": "cta", "type": "url", "label": "Button", "tab": "Content", "default": { "url": "#grain", "text": "See more shaders", "target": "_self" } },
+        { "name": "text_theme", "type": "radio", "label": "Text colour", "tab": "Content", "default": "light", "options": [{ "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" }] },
+
+        { "name": "color_1", "type": "color", "label": "Colour 1", "tab": "Shader", "group": "Colours", "default": "#e0eaff" },
+        { "name": "color_2", "type": "color", "label": "Colour 2", "tab": "Shader", "group": "Colours", "default": "#241d9a" },
+        { "name": "color_3", "type": "color", "label": "Colour 3", "tab": "Shader", "group": "Colours", "default": "#f75092" },
+        { "name": "color_4", "type": "color", "label": "Colour 4", "tab": "Shader", "group": "Colours", "default": "#9f50d3" },
+
+        { "name": "distortion", "type": "number", "tab": "Shader", "group": "Shape", "min": 0, "max": 100, "default": 80, "help": "Organic noise distortion (0–100)" },
+        { "name": "swirl", "type": "number", "tab": "Shader", "group": "Shape", "min": 0, "max": 100, "default": 10, "help": "Vortex twist (0–100)" },
+        { "name": "grain", "type": "number", "tab": "Shader", "group": "Shape", "min": 0, "max": 100, "default": 0, "help": "Film grain overlay (0–100)" },
+        { "name": "scale", "type": "number", "tab": "Shader", "group": "Shape", "min": 10, "max": 400, "default": 100, "help": "Zoom, 100 = actual size" },
+        { "name": "rotation", "type": "number", "tab": "Shader", "group": "Shape", "min": 0, "max": 360, "default": 0, "help": "Degrees" },
+
+        { "name": "speed", "type": "number", "tab": "Shader", "group": "Motion", "min": 0, "max": 200, "default": 100, "help": "100 = normal speed, 0 = still" },
+        { "name": "paused", "type": "checkbox", "label": "Pause animation", "tab": "Shader", "group": "Motion", "default": false }
+    ]
+}
+{% endcanopy %}
+
+{% canopy template %}
+{% set text = settings.text_theme == 'dark' ? 'text-zinc-950' : 'text-white' %}
+<section class="relative isolate flex min-h-[85vh] items-center overflow-hidden" style="background-color: {{ settings.color_2 }}">
+  {# The shader mounts here. Each data-* attribute is one block setting. #}
+  <div
+    class="absolute inset-0 -z-10"
+    aria-hidden="true"
+    data-shader="mesh-gradient"
+    data-colors="{{ [settings.color_1, settings.color_2, settings.color_3, settings.color_4]|join(',') }}"
+    data-distortion="{{ settings.distortion }}"
+    data-swirl="{{ settings.swirl }}"
+    data-grain="{{ settings.grain }}"
+    data-scale="{{ settings.scale }}"
+    data-rotation="{{ settings.rotation }}"
+    data-speed="{{ settings.speed }}"
+    data-paused="{{ settings.paused ? 'true' : 'false' }}"
+  ></div>
+
+  <div class="mx-auto w-full max-w-6xl px-6 py-24 {{ text }}">
+    {% if settings.eyebrow %}
+      <p class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] opacity-80">{{ settings.eyebrow }}</p>
+    {% endif %}
+    <{{ settings.heading.element }} class="max-w-3xl text-5xl font-extrabold tracking-tight sm:text-7xl">{{ settings.heading.value }}</{{ settings.heading.element }}>
+    {% if settings.description %}
+      <p class="mt-6 max-w-xl text-lg opacity-90 sm:text-xl">{{ settings.description }}</p>
+    {% endif %}
+    {% if settings.cta.url %}
+      <a href="{{ settings.cta.url }}" target="{{ settings.cta.target }}" class="mt-10 inline-flex rounded-full bg-white/15 px-6 py-3 font-semibold ring-1 ring-current/30 backdrop-blur transition hover:bg-white/25">{{ settings.cta.text }}</a>
+    {% endif %}
+  </div>
+</section>
+{% endcanopy %}
+
+{% canopy scripts %}
+{{ asset('js/shaders.js') | script_tag }}
+{% endcanopy %}

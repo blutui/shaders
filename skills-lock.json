@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "skills": {
+    "blutui-canopy-blocks": {
+      "source": "blutui/context",
+      "commit": "96496c66d1f5f659be859587bd9910428b37c5df",
+      "sourceType": "github",
+      "skillPath": "skills/blutui-canopy-blocks/SKILL.md",
+      "computedHash": "598d0920c1b5b2783f453aa99b2eb140c6ce0f28f22c6ae26e8cda00b23fe37a"
+    },
+    "blutui-project-guidelines": {
+      "source": "blutui/context",
+      "commit": "96496c66d1f5f659be859587bd9910428b37c5df",
+      "sourceType": "github",
+      "skillPath": "skills/blutui-project-guidelines/SKILL.md",
+      "computedHash": "3ef50e7744fe8e5706a84dae4bc4556b9f7fc78464977e4d536ad224574e9be2"
+    },
+    "get-started": {
+      "source": "blutui/context",
+      "commit": "96496c66d1f5f659be859587bd9910428b37c5df",
+      "sourceType": "github",
+      "skillPath": "skills/get-started/SKILL.md",
+      "computedHash": "dadf5733ecb872bc418e175dc03248b8bd601c14149bbe0625572a112e3a6045"
+    }
+  }
+}
